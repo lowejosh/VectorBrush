@@ -1,0 +1,60 @@
+/* Remove drop-down arrow */
+.dropdown-toggle:after {
+    display: none;
+}
+
+/* Minimum Width */
+html {
+    min-width: 450px;
+}
+
+html, body {
+    height: 100%;
+}
+
+#yellow {
+    background-color: yellow;
+}
+
+.container-fluid {
+    height: calc(100% - 56px);
+}
+
+.lsideb {
+    -ms-flex: 0 0 50px;
+    flex: 0 0 50px;
+}
+
+.rsideb {
+    -ms-flex: 0 0 200px;
+    flex: 0 0 200px;
+}
+
+.lsideb, .rsideb {
+    background-color: #2C3237;
+    margin: 0;
+    padding: 0;
+}
+
+.msideb {
+    background-color: #383f45;
+}
+
+@media (max-width: 576px) {
+    .lsideb {
+        -ms-flex: 0 0 100%;
+        flex: 0 0 100%;
+        height: 50px;
+
+    }
+
+    .msideb {
+        height: calc(100% - 250px);
+    }
+
+    .rsideb {
+        -ms-flex: 0 0 100%;
+        flex: 0 0 100%;
+        height: 200px;
+    }
+}
