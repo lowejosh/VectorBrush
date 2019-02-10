@@ -26,8 +26,8 @@ html, body {
 }
 
 .rsideb {
-    -ms-flex: 0 0 200px;
-    flex: 0 0 200px;
+    -ms-flex: 0 0 220px;
+    flex: 0 0 220px;
 }
 
 .lsideb, .rsideb {
@@ -38,23 +38,24 @@ html, body {
 
 .msideb {
     background-color: #383f45;
-}
+    padding: 0;
+    overflow: auto;
+} 
 
 @media (max-width: 576px) {
     .lsideb {
         -ms-flex: 0 0 100%;
         flex: 0 0 100%;
         height: 50px;
-
     }
 
     .msideb {
-        height: calc(100% - 250px);
+        height: calc(100% - 270px);
     }
 
     .rsideb {
         -ms-flex: 0 0 100%;
         flex: 0 0 100%;
-        height: 200px;
+        height: 220px;
     }
 }
