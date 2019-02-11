@@ -5,6 +5,7 @@ class VectorCanvas extends React.Component {
         updateScaling();
         super(props);
         this.state = {
+            colour: document.getElementById("cpValue").value,
             w: cWidth,
             h: cHeight,
             midX: vCanv.offsetWidth/2 - cWidth/2,
@@ -16,6 +17,7 @@ class VectorCanvas extends React.Component {
         this.interval = setInterval(() => {
             updateScaling();
             this.setState({
+                colour: document.getElementById("cpValue").value,
                 w: cWidth,
                 h: cHeight,
                 midX: vCanv.offsetWidth/2 - cWidth/2,
@@ -89,7 +91,7 @@ class PropertyControls extends React.Component {
         return (<div>
         <h5 className="properties-title">{this.state.title}</h5>
         <div id="cp" className="input-group">
-            <input type="text" className="form-control input-lg color-picker" onChange={this.handleColourChange} value={this.state.colour} spellCheck="false" />
+            <input type="text" id="cpValue" className="form-control input-lg color-picker" onChange={this.handleColourChange} value={this.state.colour} spellCheck="false" />
             <span className="input-group-append">
                 <span className="input-group-text colorpicker-input-addon color-picker"><i></i></span>
             </span>
