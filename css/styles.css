@@ -29,7 +29,7 @@ html, body {
 .lsideb, .rsideb {
     background-color: #2C3237;
     margin: 0;
-    padding: 10px;
+    padding: 1rem;
 }
 
 .msideb {
@@ -38,14 +38,51 @@ html, body {
     overflow: auto;
 } 
 
-/* Color picker */
+/* Color Picker */
 .color-picker {
     border-color: #212529;
     background-color: #f2f3f5;
     font-style: italic;
     height: 30px;
     line-height: 30px;
+    margin-bottom: 1rem;
 }
+
+/* Properties Title */
+.properties-title {
+    color: #f2f3f5;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+/* Dark input property */
+.dark-input {
+    border: 1px solid #212529;
+    border-radius: .25rem;
+    background-color: #f2f3f5;
+    font-style: italic;
+    height: 30px;
+    line-height: 30px;
+}
+
+/* Scale down default bootstrap input */
+.smaller-input {
+    height: 30px;
+    margin: 0;
+
+    line-height: 30px;
+    border: 0;
+    border-radius: .25rem;
+}
+.input-group-prepend {
+    border: none;
+}
+.input-group-prepend {
+    height: 30px;
+    margin: 0; 
+    padding: 0; 
+}
+
 
 @media (max-width: 575px) {
     .lsideb {

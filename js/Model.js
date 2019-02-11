@@ -20,9 +20,21 @@ function PropertyControls(props) {
     let title = props.item.title;
 
     return (
-        <h1>{title}</h1>
-
-
+        <div>
+            <h5 class="properties-title">{title}</h5>
+            <div id="cp" class="input-group">
+                <input type="text" class="form-control input-lg color-picker" value="#6D2781" spellcheck="false"/>
+                <span class="input-group-append">
+                <span class="input-group-text colorpicker-input-addon color-picker"><i></i></span>
+                </span>
+            </div>
+            <div class="input-group mb-3 dark-input">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">Width</span>
+                </div>
+                <input type="text" className="form-control smaller-input" />
+            </div>
+        </div>
     );
 }
 
@@ -37,9 +49,3 @@ class Item {
         this.colour = colour;
     }
 }
-
-
-// ========== INITIAL OBJECTS ==========
-let canvas = new Item("Canvas", -1, -1, defWidth, defHeight, "#f2f3f5"); 
-let currentlySelected = canvas;
-

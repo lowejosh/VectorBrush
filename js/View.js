@@ -1,5 +1,9 @@
 // === SETUP ===
-
+function setup() {
+  currentlySelected = new Item("Canvas", -1, -1, defWidth, defHeight, "#f2f3f5"); 
+  render();                    // Initial rendering
+  setInterval(render, 50);     // Rendering updates
+}
 
 
 // === RENDERING THE CANVAS ===
@@ -14,6 +18,7 @@ function render() {
     ReactDOM.render(propEl, vProp);
 }
 
+
 // === OTHER FUNCTIONS ===
 // Color picker 
 $(function () {
@@ -23,6 +28,5 @@ $(function () {
 });
 
 
-// === DEPLOY === 
-render();                    // Initial rendering
-setInterval(render, 50);     // Rendering updates
+// === START PROGRAM ===
+setup();
