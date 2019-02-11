@@ -1,19 +1,43 @@
 // ========== REACT MODELS ==========
 // CANVAS MODEL 
-function VectorCanvas(props) {
+class VectorCanvas extends React.Component {
+    constructor(props) {
+        updateScaling();
+        super(props);
+        this.state = {
+            w: cWidth,
+            h: cHeight,
+            midX: vCanv.offsetWidth/2 - cWidth/2,
+            midY: vCanv.offsetHeight/2 - cHeight/2
+        };
+    }
 
-    let w = props.width;            // Width of the canvas 
-    let h = props.height;           // Height of the canvas
-    let midX = vCanv.offsetWidth/2 - w/2;          // X value that will place the canvas horizontally centered
-    let midY = vCanv.offsetHeight/2 - h/2;          // Y value that will place the canvas vertically centered
+    componentDidMount() {
+        this.interval = setInterval(() => {
+            updateScaling();
+            this.setState({
+                w: cWidth,
+                h: cHeight,
+                midX: vCanv.offsetWidth/2 - cWidth/2,
+                midY: vCanv.offsetHeight/2 - cHeight/2
+            });
+        }, 50);
+    }
+  
+    componentWillUnmount() {
+        clearInterval(this.interval);
+    }
 
-    return (
+
+    render() {
+        console.log("working");
+        return (
         // Working area
         <svg width="100%" height="100%">
-            {/* Actual canvas */}
-            <rect x={midX} y={midY} width={w} height={h} fill={props.colour} />
-        </svg>
-    );
+
+            <rect x={this.state.midX} y={this.state.midY} width={this.state.w} height={this.state.h} fill={this.state.colour} />
+        </svg>);
+    }
 }
 
 // PROPERTY MODEL 
