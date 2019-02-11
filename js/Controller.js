@@ -7,8 +7,12 @@ let defWidth = 500;                                     // Initial default canva
 let defHeight = 500;                                    // Initial default canvas height
 let cWidth = defWidth * scale;                          // *actual* canvas width after scale is applied
 let cHeight;                                             // *actual* canvas height after scale is applied
-// Other vars
+// Element vars
 let currentlySelected;
+let canvEl;
+let propEl;
+// Other tracking vars
+let validColour = false;
 
 function updateScaling() {
     // Temp vars

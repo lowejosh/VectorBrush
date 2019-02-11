@@ -1,6 +1,7 @@
 // ========== REACT MODELS ==========
 // CANVAS MODEL 
 function VectorCanvas(props) {
+
     let w = props.width;            // Width of the canvas 
     let h = props.height;           // Height of the canvas
     let midX = vCanv.offsetWidth/2 - w/2;          // X value that will place the canvas horizontally centered
@@ -16,26 +17,73 @@ function VectorCanvas(props) {
 }
 
 // PROPERTY MODEL 
-function PropertyControls(props) {
-    let title = props.item.title;
+class PropertyControls extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            title: props.item.title,
+            colour: props.item.colour,
+            width: props.item.width,
+            height: props.item.height
+        };
+        this.handleWidthChange = this.handleWidthChange.bind(this);
+        this.handleHeightChange = this.handleHeightChange.bind(this);
+        this.handleColourChange = this.handleColourChange.bind(this);
+    }
 
-    return (
-        <div>
-            <h5 class="properties-title">{title}</h5>
-            <div id="cp" class="input-group">
-                <input type="text" class="form-control input-lg color-picker" value="#6D2781" spellcheck="false"/>
-                <span class="input-group-append">
-                <span class="input-group-text colorpicker-input-addon color-picker"><i></i></span>
-                </span>
-            </div>
-            <div class="input-group mb-3 dark-input">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon1">Width</span>
-                </div>
-                <input type="text" className="form-control smaller-input" />
+    handleWidthChange(e) {
+        this.setState({
+            width: e.target.value
+        });
+    }
+
+    handleHeightChange(e) {
+        this.setState({
+            height: e.target.value
+        });
+    }
+
+    // Handle colour picker changes
+    handleColourChange(e) {
+        // If valid hex or rgb/a 
+        var rgbRegex = /(rgb\(((([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5]),\s*){2}([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\)))|(rgba\(((([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5]),\s*){3}(1|1.0*|0?.\d)\)))/
+        var hexRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/
+        if (e.target.value.match(rgbRegex) || e.target.value.match(hexRegex)) {
+            // Set as valid colour
+            validColour = true;
+        } else {
+            // Set as invalid colour
+            validColour = false;
+        }
+        // Update the state
+        this.setState({
+            colour: e.target.value
+        });
+    }
+
+    render() {
+        return (<div>
+        <h5 className="properties-title">{this.state.title}</h5>
+        <div id="cp" className="input-group">
+            <input type="text" className="form-control input-lg color-picker" onChange={this.handleColourChange} value={this.state.colour} spellCheck="false" />
+            <span className="input-group-append">
+                <span className="input-group-text colorpicker-input-addon color-picker"><i></i></span>
+            </span>
+        </div>
+        <div className="input-group mb-3">
+            <input type="text" className="form-control smaller-input" onChange={this.handleWidthChange} value={this.state.width} />
+            <div className="input-group-append">
+                <span className="input-group-text" id="prop-width">Width</span>
             </div>
         </div>
-    );
+        <div className="input-group mb-3">
+            <input type="text" className="form-control smaller-input" onChange={this.handleHeightChange} value={this.state.height} />
+            <div className="input-group-append">
+                <span className="input-group-text" id="prop-height">Height</span>
+            </div>
+        </div>
+    </div>);
+    }
 }
 
 // ========== JAVASCRIPT CLASSES ==========
