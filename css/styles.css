@@ -42,7 +42,7 @@ html, body {
     overflow: auto;
 } 
 
-@media (max-width: 576px) {
+@media (max-width: 575px) {
     .lsideb {
         -ms-flex: 0 0 100%;
         flex: 0 0 100%;
