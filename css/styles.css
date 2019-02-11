@@ -12,10 +12,6 @@ html, body {
     height: 100%;
 }
 
-#yellow {
-    background-color: yellow;
-}
-
 .container-fluid {
     height: calc(100% - 56px);
 }
@@ -33,7 +29,7 @@ html, body {
 .lsideb, .rsideb {
     background-color: #2C3237;
     margin: 0;
-    padding: 0;
+    padding: 10px;
 }
 
 .msideb {
@@ -41,6 +37,15 @@ html, body {
     padding: 0;
     overflow: auto;
 } 
+
+/* Color picker */
+.color-picker {
+    border-color: #212529;
+    background-color: #f2f3f5;
+    font-style: italic;
+    height: 30px;
+    line-height: 30px;
+}
 
 @media (max-width: 575px) {
     .lsideb {
