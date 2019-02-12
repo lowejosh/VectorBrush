@@ -12,7 +12,8 @@ let currentlySelected;
 let canvEl;
 let propEl;
 // Other tracking vars
-let validColour = false;
+let validColour = true;
+
 
 function updateScaling() {
     // Temp vars
@@ -49,3 +50,4 @@ function updateScaling() {
     cWidth = defWidth * scale;
     cHeight = defHeight * scale;
 }
+

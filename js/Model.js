@@ -15,9 +15,16 @@ class VectorCanvas extends React.Component {
 
     componentDidMount() {
         this.interval = setInterval(() => {
+            // Update the scaling values
             updateScaling();
+            // See if valid colour
+            console.log(validColour);
+            let clrBuffer = this.state.colour;
+            if (validColour) {
+                clrBuffer = document.getElementById("cpValue").value;
+            } 
             this.setState({
-                colour: document.getElementById("cpValue").value,
+                colour: clrBuffer,
                 w: cWidth,
                 h: cHeight,
                 midX: vCanv.offsetWidth/2 - cWidth/2,
@@ -32,7 +39,6 @@ class VectorCanvas extends React.Component {
 
 
     render() {
-        console.log("working");
         return (
         // Working area
         <svg width="100%" height="100%">
@@ -59,18 +65,21 @@ class PropertyControls extends React.Component {
 
     handleWidthChange(e) {
         this.setState({
-            width: e.target.value
+            width: e.target.value,
+            colour: document.getElementById("cpValue").value
         });
     }
 
     handleHeightChange(e) {
         this.setState({
-            height: e.target.value
+            height: e.target.value,
+            colour: document.getElementById("cpValue").value
         });
     }
 
     // Handle colour picker changes
     handleColourChange(e) {
+        console.log("here");
         // If valid hex or rgb/a 
         var rgbRegex = /(rgb\(((([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5]),\s*){2}([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\)))|(rgba\(((([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5]),\s*){3}(1|1.0*|0?.\d)\)))/
         var hexRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/
@@ -83,7 +92,7 @@ class PropertyControls extends React.Component {
         }
         // Update the state
         this.setState({
-            colour: e.target.value
+            colour: document.getElementById("cpValue").value
         });
     }
 
@@ -91,7 +100,7 @@ class PropertyControls extends React.Component {
         return (<div>
         <h5 className="properties-title">{this.state.title}</h5>
         <div id="cp" className="input-group">
-            <input type="text" id="cpValue" className="form-control input-lg color-picker" onChange={this.handleColourChange} value={this.state.colour} spellCheck="false" />
+            <input type="text" id="cpValue" className="form-control input-lg color-picker" onChange={this.handleColourChange} onInput={this.handleColourChange} value={this.state.colour} spellCheck="false" />
             <span className="input-group-append">
                 <span className="input-group-text colorpicker-input-addon color-picker"><i></i></span>
             </span>

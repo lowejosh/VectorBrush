@@ -1,6 +1,6 @@
 // === SETUP ===
 function setup() {
-  let canvas = currentlySelected = new Item("Canvas", -1, -1, defWidth, defHeight, "#f2f3f5"); 
+  let canvas = currentlySelected = new Item("Canvas", -1, -1, defWidth, defHeight, "rgb(243, 243, 245)"); 
 
   // Start rendering the canvas
 
