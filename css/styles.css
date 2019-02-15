@@ -43,7 +43,7 @@ html, body {
 .properties-title {
     color: #f2f3f5;
     text-align: center;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
 }
 
 /* Scale down default bootstrap input */
@@ -59,14 +59,14 @@ html, body {
     padding: 0; 
 }
 .input-group {
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
 }
 .color-picker {
     background-color: #fff;
     font-style: italic;
     height: 30px;
     line-height: 30px;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
 }
 .input-group-append {
     border-radius: .25rem;

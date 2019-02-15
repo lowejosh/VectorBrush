@@ -29,8 +29,8 @@ class VectorCanvas extends React.Component {
                 colour: clrBuffer,
                 w: cWidth,
                 h: cHeight,
-                midX: vCanv.offsetWidth/2 - cWidth/2,
-                midY: vCanv.offsetHeight/2 - cHeight/2
+                midX: cx,
+                midY: cy
             });
 
             // === OTHER LAYER STUFF ===
@@ -47,11 +47,25 @@ class VectorCanvas extends React.Component {
     }
 
     render() {
+        // Get JSX of all layers except canvas
+        let JSX = new Array();
+        console.log(layers.length);
+        if (layers.length > 1) {
+            for (let i = 1; i < layers.length; i++) {
+                JSX.push(layers[i].getJSX());
+                console.log(layers[i].getJSX());
+            }
+        }
+
         return (
         // Working area
         <svg width="100%" height="100%">
 
+            {/* CANVAS */}
             <rect x={this.state.midX} y={this.state.midY} width={this.state.w} height={this.state.h} fill={this.state.colour} />
+
+            {/* LAYERS */}
+            {JSX}
         </svg>);
     }
 }
@@ -134,12 +148,7 @@ class PropertyControls extends React.Component {
     render() {
         return (<div>
         <h5 className="properties-title">{this.state.title}</h5>
-        <div id="cp" className="input-group">
-            <input type="text" id="cpValue" className="form-control input-lg color-picker" onChange={this.handleColourChange} onInput={this.handleColourChange} value={this.state.colour} spellCheck="false" />
-            <span className="input-group-append">
-                <span className="input-group-text colorpicker-input-addon color-picker"><i></i></span>
-            </span>
-        </div>
+        <h6 className="properties-title">Background</h6>
         <div className="input-group mb-3">
             <input type="text" className="form-control smaller-input" onChange={this.handleWidthChange} value={this.state.width} />
             <div className="input-group-append">
@@ -152,18 +161,48 @@ class PropertyControls extends React.Component {
                 <span className="input-group-text" id="prop-height">Height</span>
             </div>
         </div>
+        <div id="cp" className="input-group">
+            <input type="text" id="cpValue" className="form-control input-lg color-picker" onChange={this.handleColourChange} onInput={this.handleColourChange} value={this.state.colour} spellCheck="false" />
+            <span className="input-group-append">
+                <span className="input-group-text colorpicker-input-addon color-picker"><i></i></span>
+            </span>
+        </div>
+
+        <h6 className="properties-title">Stroke</h6>
+        <div className="input-group mb-3">
+            <input type="text" className="form-control smaller-input" onChange={this.handleStrokeTChange} value={this.state.strokeT} />
+            <div className="input-group-append">
+                <span className="input-group-text" id="prop-width">Thickness</span>
+            </div>
+        </div>
+        <div id="cp" className="input-group">
+            <input type="text" id="cpValue" className="form-control input-lg color-picker" onChange={this.handleColourChange} onInput={this.handleColourChange} value={this.state.colour} spellCheck="false" />
+            <span className="input-group-append">
+                <span className="input-group-text colorpicker-input-addon color-picker"><i></i></span>
+            </span>
+        </div>
     </div>);
     }
 }
 
 // ========== JAVASCRIPT CLASSES ==========
 class Item {
-    constructor(title, x, y, width, height, colour) {
+    constructor(title, x, y, width, height, colour, type, layerNo) {
         this.title = title;
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.colour = colour;
+        this.type = type;
+        this.layerNo = layerNo;
+    }
+
+    getJSX() {
+        switch(this.type) {
+            case "rect":
+                return <rect x={cx + (this.x * scale)} y={cy + (this.y * scale)} width={this.width * scale} height={this.height * scale} fill={this.colour} />
+                break;
+        }
     }
 }
