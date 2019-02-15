@@ -34,6 +34,7 @@ class VectorCanvas extends React.Component {
             });
 
             // === OTHER LAYER STUFF ===
+            
 
             // TODO
 
@@ -73,18 +74,51 @@ class PropertyControls extends React.Component {
     handleWidthChange(e) {
         // Get colour from DOM because the state isnt updated when using the colour picker
         let clrBuffer = document.getElementById("cpValue").value;
-        this.setState({
-            width: e.target.value,
-            colour: clrBuffer
-        });
+
+        // Validate numeric value
+        let re = /^([1-9][0-9]{0,4})$/
+        let newWidth = e.target.value;
+        // If the regex matches or the length is 0
+        if (newWidth.match(re) || newWidth.length == 0) {
+            // Set the new state
+            this.setState({
+                width: newWidth,
+                colour: clrBuffer
+            });
+            // If the canvas layer
+            if (currentlySelectedLayer == 0) {
+                defWidth = newWidth;
+            } else {
+                // TODO notifications
+            }
+        }
+
+
     }
 
     handleHeightChange(e) {
+        // Get colour from DOM because the state isnt updated when using the colour picker
         let clrBuffer = document.getElementById("cpValue").value;
-        this.setState({
-            height: e.target.value,
-            colour: clrBuffer
-        });
+
+        // Validate numeric value
+        let re = /^([1-9][0-9]{0,4})$/                              
+        let newHeight = e.target.value;
+        // If the regex matches or the length is 0
+        if (newHeight.match(re) || newHeight.length == 0) {
+            // Set the state
+            this.setState({
+                height: newHeight,
+                colour: clrBuffer
+            });
+            // If the canvas layer
+            if (currentlySelectedLayer == 0) {
+                defHeight = newHeight;
+            }
+        } else {
+            //TODO notifications
+        }
+
+
     }
 
     // Handle colour picker changes
