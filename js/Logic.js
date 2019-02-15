@@ -8,9 +8,10 @@ let defHeight = 500;                                    // Initial default canva
 let cWidth = defWidth * scale;                          // *actual* canvas width after scale is applied
 let cHeight;                                             // *actual* canvas height after scale is applied
 // Element vars
-let currentlySelected;
+let currentlySelectedLayer;
 let canvEl;
 let propEl;
+let layers = new Array();
 // Other tracking vars
 let validColour = true;
 
@@ -51,3 +52,15 @@ function updateScaling() {
     cHeight = defHeight * scale;
 }
 
+// CHECK FOR VALID COLOUR
+function checkValidColour(colour) {
+    // If valid hex or rgb/a 
+    var rgbRegex = /(rgb\(((([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5]),\s*){2}([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\)))|(rgba\(((([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5]),\s*){3}(1|1.0*|0?.\d)\)))/
+    var hexRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/
+    if (colour.match(rgbRegex) || colour.match(hexRegex)) {
+        return true;
+    } else {
+        return false;
+    }
+
+}

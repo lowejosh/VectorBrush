@@ -1,11 +1,12 @@
 // === SETUP ===
 function setup() {
-  let canvas = currentlySelected = new Item("Canvas", -1, -1, defWidth, defHeight, "rgb(243, 243, 245)"); 
-
-  // Start rendering the canvas
+  // Initialize the layers
+  let canvas = new Item("Canvas", -1, -1, defWidth, defHeight, "rgb(243, 243, 245)", 0); 
+  currentlySelectedLayer = 0;
+  layers[0] = canvas; 
 
   // Render the currently selected object properties
-  propEl = <PropertyControls item={currentlySelected}/>;
+  propEl = <PropertyControls item={layers[currentlySelectedLayer]}/>;
   ReactDOM.render(propEl, vProp);
 
   // Render the canvas

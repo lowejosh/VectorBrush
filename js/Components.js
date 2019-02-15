@@ -5,22 +5,24 @@ class VectorCanvas extends React.Component {
         updateScaling();
         super(props);
         this.state = {
-            colour: document.getElementById("cpValue").value,
+            colour: props.colour,
             w: cWidth,
             h: cHeight,
             midX: vCanv.offsetWidth/2 - cWidth/2,
-            midY: vCanv.offsetHeight/2 - cHeight/2
+            midY: vCanv.offsetHeight/2 - cHeight/2,
+            layerNo: 0
         };
     }
 
     componentDidMount() {
         this.interval = setInterval(() => {
+            // === CANVAS STUFF === 
             // Update the scaling values
             updateScaling();
             // See if valid colour
-            console.log(validColour);
+            validColour = checkValidColour(document.getElementById("cpValue").value);
             let clrBuffer = this.state.colour;
-            if (validColour) {
+            if (validColour && (currentlySelectedLayer == this.state.layerNo)) {
                 clrBuffer = document.getElementById("cpValue").value;
             } 
             this.setState({
@@ -30,13 +32,18 @@ class VectorCanvas extends React.Component {
                 midX: vCanv.offsetWidth/2 - cWidth/2,
                 midY: vCanv.offsetHeight/2 - cHeight/2
             });
+
+            // === OTHER LAYER STUFF ===
+
+            // TODO
+
+
         }, 50);
     }
   
     componentWillUnmount() {
         clearInterval(this.interval);
     }
-
 
     render() {
         return (
@@ -64,32 +71,26 @@ class PropertyControls extends React.Component {
     }
 
     handleWidthChange(e) {
+        // Get colour from DOM because the state isnt updated when using the colour picker
+        let clrBuffer = document.getElementById("cpValue").value;
         this.setState({
             width: e.target.value,
-            colour: document.getElementById("cpValue").value
+            colour: clrBuffer
         });
     }
 
     handleHeightChange(e) {
+        let clrBuffer = document.getElementById("cpValue").value;
         this.setState({
             height: e.target.value,
-            colour: document.getElementById("cpValue").value
+            colour: clrBuffer
         });
     }
 
     // Handle colour picker changes
     handleColourChange(e) {
         console.log("here");
-        // If valid hex or rgb/a 
-        var rgbRegex = /(rgb\(((([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5]),\s*){2}([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\)))|(rgba\(((([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5]),\s*){3}(1|1.0*|0?.\d)\)))/
-        var hexRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/
-        if (e.target.value.match(rgbRegex) || e.target.value.match(hexRegex)) {
-            // Set as valid colour
-            validColour = true;
-        } else {
-            // Set as invalid colour
-            validColour = false;
-        }
+        validColour = checkValidColour(e.target.value);
         // Update the state
         this.setState({
             colour: document.getElementById("cpValue").value
