@@ -39,7 +39,7 @@ class VectorCanvas extends React.Component {
             // TODO
 
 
-        }, 50);
+        }, 100);
     }
   
     componentWillUnmount() {
@@ -49,11 +49,9 @@ class VectorCanvas extends React.Component {
     render() {
         // Get JSX of all layers except canvas
         let JSX = new Array();
-        console.log(layers.length);
         if (layers.length > 1) {
             for (let i = 1; i < layers.length; i++) {
                 JSX.push(layers[i].getJSX());
-                console.log(layers[i].getJSX());
             }
         }
 
@@ -78,11 +76,15 @@ class PropertyControls extends React.Component {
             title: props.item.title,
             colour: props.item.colour,
             width: props.item.width,
-            height: props.item.height
+            height: props.item.height,
+            strokeColour: "rgb(0, 0, 0)",
+            strokeT: 0
         };
         this.handleWidthChange = this.handleWidthChange.bind(this);
         this.handleHeightChange = this.handleHeightChange.bind(this);
-        this.handleColourChange = this.handleColourChange.bind(this);
+        this.handleBGColourChange = this.handleBGColourChange.bind(this);
+        this.handleStrokeColourChange = this.handleStrokeColourChange.bind(this);
+        this.handleStrokeTChange = this.handleStrokeTChange.bind(this);
     }
 
     handleWidthChange(e) {
@@ -106,8 +108,6 @@ class PropertyControls extends React.Component {
                 // TODO notifications
             }
         }
-
-
     }
 
     handleHeightChange(e) {
@@ -131,13 +131,10 @@ class PropertyControls extends React.Component {
         } else {
             //TODO notifications
         }
-
-
     }
 
     // Handle colour picker changes
-    handleColourChange(e) {
-        console.log("here");
+    handleBGColourChange(e) {
         validColour = checkValidColour(e.target.value);
         // Update the state
         this.setState({
@@ -145,41 +142,78 @@ class PropertyControls extends React.Component {
         });
     }
 
-    render() {
-        return (<div>
-        <h5 className="properties-title">{this.state.title}</h5>
-        <h6 className="properties-title">Background</h6>
-        <div className="input-group mb-3">
-            <input type="text" className="form-control smaller-input" onChange={this.handleWidthChange} value={this.state.width} />
-            <div className="input-group-append">
-                <span className="input-group-text" id="prop-width">Width</span>
-            </div>
-        </div>
-        <div className="input-group mb-3">
-            <input type="text" className="form-control smaller-input" onChange={this.handleHeightChange} value={this.state.height} />
-            <div className="input-group-append">
-                <span className="input-group-text" id="prop-height">Height</span>
-            </div>
-        </div>
-        <div id="cp" className="input-group">
-            <input type="text" id="cpValue" className="form-control input-lg color-picker" onChange={this.handleColourChange} onInput={this.handleColourChange} value={this.state.colour} spellCheck="false" />
-            <span className="input-group-append">
-                <span className="input-group-text colorpicker-input-addon color-picker"><i></i></span>
-            </span>
-        </div>
+    // Handle stroke thickness changes
+    handleStrokeTChange(e) {
+        // Get colour from DOM because the state isnt updated when using the colour picker
+        let clrBuffer = document.getElementById("cpValue").value;
 
-        <h6 className="properties-title">Stroke</h6>
-        <div className="input-group mb-3">
-            <input type="text" className="form-control smaller-input" onChange={this.handleStrokeTChange} value={this.state.strokeT} />
-            <div className="input-group-append">
-                <span className="input-group-text" id="prop-width">Thickness</span>
+        // Validate numeric value
+        let re = /^([1-9][0-9]{0,4})$/                              
+        let newStroke = e.target.value;
+        // If the regex matches or the length is 0
+        if (newStroke.match(re) || newStroke.length == 0) {
+            // Set the state
+            this.setState({
+                strokeT: newStroke,
+                colour: clrBuffer
+            });
+            // If the canvas layer
+            if (currentlySelectedLayer == 0) {
+                defHeight = newHeight;
+            }
+        } else {
+            //TODO notifications
+        }
+    }
+
+    // handle stroke colour changes 
+    handleStrokeColourChange(e) {
+
+    }
+
+    render() {
+        return (<div className="prop-wrap">
+        <div className="info">
+            <h5 className="properties-title">Editing <i>{this.state.title}</i></h5>
+            <h6 className="properties-title">Size/Background</h6>
+            <div className="input-group mb-3">
+                <input type="text" className="form-control smaller-input" onChange={this.handleWidthChange} value={this.state.width} />
+                <div className="input-group-append">
+                    <span className="input-group-text" id="prop-width">Width</span>
+                </div>
+            </div>
+            <div className="input-group mb-3">
+                <input type="text" className="form-control smaller-input" onChange={this.handleHeightChange} value={this.state.height} />
+                <div className="input-group-append">
+                    <span className="input-group-text" id="prop-height">Height</span>
+                </div>
+            </div>
+            <div id="cp" className="input-group">
+                <input type="text" id="cpValue" className="form-control input-lg color-picker" onChange={this.handleBGColourChange} onInput={this.handleBGColourChange} value={this.state.colour} spellCheck="false" />
+                <span className="input-group-append">
+                    <span className="input-group-text colorpicker-input-addon color-picker"><i></i></span>
+                </span>
+            </div>
+
+            <h6 className="properties-title">Stroke</h6>
+            <div className="input-group mb-3">
+                <input type="text" className="form-control smaller-input" onChange={this.handleStrokeTChange} value={this.state.strokeT} />
+                <div className="input-group-append">
+                    <span className="input-group-text" id="prop-width">Thickness</span>
+                </div>
+            </div>
+            <div id="cp2" className="input-group">
+                <input type="text" id="cp2Value" className="form-control input-lg color-picker" onChange={this.handleStrokeColourChange} onInput={this.handleStrokeColourChange} value={this.state.strokeColour} spellCheck="false" />
+                <span className="input-group-append">
+                    <span className="input-group-text colorpicker-input-addon color-picker"><i></i></span>
+                </span>
             </div>
         </div>
-        <div id="cp" className="input-group">
-            <input type="text" id="cpValue" className="form-control input-lg color-picker" onChange={this.handleColourChange} onInput={this.handleColourChange} value={this.state.colour} spellCheck="false" />
-            <span className="input-group-append">
-                <span className="input-group-text colorpicker-input-addon color-picker"><i></i></span>
-            </span>
+        <div className="layers">
+            <h5 className="properties-title">Layers</h5>
+            <div className="layer-list">
+
+            </div>
         </div>
     </div>);
     }

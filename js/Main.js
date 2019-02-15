@@ -32,7 +32,7 @@ function renderCanvas() {
 
 
 // === OTHER FUNCTIONS ===
-// Color picker 
+// BG Color picker 
 $(function () {
   $('#cp').colorpicker({
     horizontal: true,
@@ -40,6 +40,13 @@ $(function () {
   });
 });
 
+// StrokeColor picker 
+$(function () {
+  $('#cp2').colorpicker({
+    horizontal: true,
+    autoInputFallback: false
+  });
+});
 
 // === START PROGRAM ===
 setup();

@@ -7,8 +7,9 @@ let defWidth = 500;                                     // Initial default canva
 let defHeight = 500;                                    // Initial default canvas height
 let cWidth = defWidth * scale;                          // *actual* canvas width after scale is applied
 let cHeight = defHeight * scale;                        // *actual* canvas height after scale is applied
-let cx = vCanv.offsetWidth/2 - cWidth/2;
-let cy = vCanv.offsetHeight/2 - cHeight/2;
+let cx = vCanv.offsetWidth/2 - cWidth/2;                // Canvas x value to center it
+let cy = vCanv.offsetHeight/2 - cHeight/2;              // Canvas y value to center it
+let st = 0;                                             // Stroke thickness
 // Element vars
 let currentlySelectedLayer;
 let canvEl;
@@ -16,6 +17,7 @@ let propEl;
 let layers = new Array();
 // Other tracking vars
 let validColour = true;
+let validStrokeColour = true;
 
 
 // UPDATE THE CANVAS SCALING
