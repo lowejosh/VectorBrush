@@ -57,8 +57,8 @@ class VectorCanvas extends React.Component {
     render() {
         // Get JSX of all layers except canvas
         let JSX = new Array();
-        if (layers.length > 1) {
-            for (let i = 1; i < layers.length; i++) {
+        if (layers.getAmount() > 1) {
+            for (let i = 1; i < layers.getAmount(); i++) {
                 JSX.push(layers.getLayer(i).getJSX());
             }
         }
@@ -194,7 +194,6 @@ class PropertyControls extends React.Component {
 
     // handle stroke colour changes 
     handleStrokeColourChange(e) {
-        console.log("REACHED");
         let clrBuffer = document.getElementById("cp2Value").value;
         this.setState({
             strokeColour: clrBuffer
@@ -296,6 +295,9 @@ class Item {
     }
 
     getJSX() {
+        let cx = layers.getCanvas().x;
+        let cy = layers.getCanvas().y;
+        let scale = layers.getScale();
         switch(this.type) {
             case "rect":
                 return <rect key={this.layerNo} x={cx + (this.x * scale)} y={cy + (this.y * scale)} width={this.width * scale} height={this.height * scale} fill={this.colour} />
@@ -338,5 +340,9 @@ class LayerMap {
 
     getCanvas() {
         return this.getLayer(0);
+    }
+
+    getAmount() { 
+        return this.layers.length;
     }
 }
