@@ -106,6 +106,7 @@ class PropertyControls extends React.Component {
     handleWidthChange(e) {
         // Get colour from DOM because the state isnt updated when using the colour picker
         let clrBuffer = document.getElementById("cpValue").value;
+        let strokeClrBuffer = document.getElementById("cp2Value").value;
 
         // Validate numeric value
         let re = /^([1-9][0-9]{0,4})$/
@@ -115,7 +116,8 @@ class PropertyControls extends React.Component {
             // Set the new state
             this.setState({
                 width: newWidth,
-                colour: clrBuffer
+                colour: clrBuffer,
+                strokeColour: strokeClrBuffer,
             });
             // If the canvas layer
             if (layers.getCurrentLayerIndex() == 0) {
@@ -131,6 +133,7 @@ class PropertyControls extends React.Component {
     handleHeightChange(e) {
         // Get colour from DOM because the state isnt updated when using the colour picker
         let clrBuffer = document.getElementById("cpValue").value;
+        let strokeClrBuffer = document.getElementById("cp2Value").value;
 
         // Validate numeric value
         let re = /^([1-9][0-9]{0,4})$/                              
@@ -140,7 +143,8 @@ class PropertyControls extends React.Component {
             // Set the state
             this.setState({
                 height: newHeight,
-                colour: clrBuffer
+                colour: clrBuffer,
+                strokeColour: strokeClrBuffer,
             });
             // If the canvas layer
             if (layers.getCurrentLayerIndex() == 0) {
@@ -166,6 +170,7 @@ class PropertyControls extends React.Component {
     handleStrokeTChange(e) {
         // Get colour from DOM because the state isnt updated when using the colour picker
         let clrBuffer = document.getElementById("cpValue").value;
+        let strokeClrBuffer = document.getElementById("cp2Value").value;
 
         // Validate numeric value
         let re = /^([1-9][0-9]{0,4})$/                              
@@ -175,7 +180,8 @@ class PropertyControls extends React.Component {
             // Set the state
             this.setState({
                 strokeT: newStroke,
-                colour: clrBuffer
+                colour: clrBuffer,
+                strokeColour: strokeClrBuffer,
             });
             // If the canvas layer
             if (layers.getCurrentLayerIndex() == 0) {
