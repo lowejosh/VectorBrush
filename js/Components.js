@@ -9,10 +9,12 @@ class VectorCanvas extends React.Component {
         
         this.state = {
             colour: canv.colour,
+            strokeColour: canv.strokeColour,
             w: canv.width,
             h: canv.height,
             x: canv.x,
             y: canv.y,
+            stroke: canv.strokeWidth,
             scale: layers.getScale(),
         };
     }
@@ -30,10 +32,12 @@ class VectorCanvas extends React.Component {
             } 
             this.setState({
                 colour: clrBuffer,
+                strokeColour: c.strokeColour,
                 w: c.width,
                 h: c.height,
                 x: c.x,
                 y: c.y,
+                stroke: c.strokeWidth,
                 scale: layers.getScale(),
             });
 
@@ -60,14 +64,19 @@ class VectorCanvas extends React.Component {
         }
 
         // Prep the canvas style tag
-        let cStyle = "stroke: " + this.state.strokeColour + "; stroke-width: " + this.state.stroke;
+        let cStyle = {
+            fill: this.state.colour,
+            stroke: this.state.strokeColour,
+            strokeWidth: this.state.stroke
+        }
+        console.log(cStyle);
 
         return (
         // Working area
         <svg width="100%" height="100%">
 
             {/* CANVAS */}
-            <rect x={this.state.x} y={this.state.y} width={this.state.w} height={this.state.h} fill={this.state.colour} style={{cStyle}}/>
+            <rect x={this.state.x} y={this.state.y} width={this.state.w} height={this.state.h} style={cStyle}/>
 
             {/* LAYERS */}
             {JSX}
@@ -171,7 +180,7 @@ class PropertyControls extends React.Component {
             });
             // If the canvas layer
             if (layers.getCurrentLayerIndex() == 0) {
-                st = newStroke;
+                layers.getCanvas().strokeWidth = newStroke;
             }
         } else {
             //TODO notifications
