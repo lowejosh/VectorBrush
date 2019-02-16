@@ -17,8 +17,6 @@ class VectorCanvas extends React.Component {
     componentDidMount() {
         this.interval = setInterval(() => {
             // === CANVAS STUFF === 
-            // Update the scaling values
-            updateScaling();
             // See if valid colour
             validColour = checkValidColour(document.getElementById("cpValue").value);
             let clrBuffer = this.state.colour;
@@ -30,7 +28,9 @@ class VectorCanvas extends React.Component {
                 w: cWidth,
                 h: cHeight,
                 midX: cx,
-                midY: cy
+                midY: cy,
+                stroke: st,
+                strokeColour: stColour
             });
 
             // === OTHER LAYER STUFF ===
@@ -47,6 +47,9 @@ class VectorCanvas extends React.Component {
     }
 
     render() {
+        // Update the scaling values
+        updateScaling();
+
         // Get JSX of all layers except canvas
         let JSX = new Array();
         if (layers.length > 1) {
@@ -55,12 +58,15 @@ class VectorCanvas extends React.Component {
             }
         }
 
+        // Prep the canvas style tag
+        let cStyle = "stroke: " + this.state.strokeColour + "; stroke-width: " + this.state.stroke;
+
         return (
         // Working area
         <svg width="100%" height="100%">
 
             {/* CANVAS */}
-            <rect x={this.state.midX} y={this.state.midY} width={this.state.w} height={this.state.h} fill={this.state.colour} />
+            <rect x={this.state.midX} y={this.state.midY} width={this.state.w} height={this.state.h} fill={this.state.colour} style={{cStyle}}/>
 
             {/* LAYERS */}
             {JSX}
@@ -151,7 +157,7 @@ class PropertyControls extends React.Component {
         let re = /^([1-9][0-9]{0,4})$/                              
         let newStroke = e.target.value;
         // If the regex matches or the length is 0
-        if (newStroke.match(re) || newStroke.length == 0) {
+        if (newStroke.match(re) || newStroke.length == 0 || newStroke == "0") {
             // Set the state
             this.setState({
                 strokeT: newStroke,
@@ -159,7 +165,7 @@ class PropertyControls extends React.Component {
             });
             // If the canvas layer
             if (currentlySelectedLayer == 0) {
-                defHeight = newHeight;
+                st = newStroke;
             }
         } else {
             //TODO notifications
@@ -172,6 +178,19 @@ class PropertyControls extends React.Component {
     }
 
     render() {
+
+        // Create the layer list output
+        let layerJSX = new Array();
+        for (let i = layers.length - 1; i >= 0; i--) {
+            // TODO add a nice little svg icon showing the shape
+            console.log(i);
+            layerJSX.push(
+                <div className="layer-list-object" key={i}>{layers[i].title}</div>
+            );
+            console.log("i: " + i + "; li: " + layers[i].title);
+
+        }
+
         return (<div className="prop-wrap">
         <div className="info">
             <h5 className="properties-title">Editing <i>{this.state.title}</i></h5>
@@ -209,14 +228,31 @@ class PropertyControls extends React.Component {
                 </span>
             </div>
         </div>
-        <div className="layers">
-            <h5 className="properties-title">Layers</h5>
-            <div className="layer-list">
-
-            </div>
-        </div>
     </div>);
     }
+}
+
+// LAYERS MODEL 
+class Layers extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            layers: this.props.layers
+        };
+    }
+
+    render() {
+        return (
+            <div className="layers">
+                <h5 className="properties-title">Layers</h5>
+                <div className="layer-list">
+
+                </div>
+            </div>
+
+        );
+    }
+
 }
 
 // ========== JAVASCRIPT CLASSES ==========
@@ -235,7 +271,7 @@ class Item {
     getJSX() {
         switch(this.type) {
             case "rect":
-                return <rect x={cx + (this.x * scale)} y={cy + (this.y * scale)} width={this.width * scale} height={this.height * scale} fill={this.colour} />
+                return <rect key={this.layerNo} x={cx + (this.x * scale)} y={cy + (this.y * scale)} width={this.width * scale} height={this.height * scale} fill={this.colour} />
                 break;
         }
     }

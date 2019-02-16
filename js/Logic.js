@@ -1,7 +1,7 @@
 // === GLOBAL VARS ===
 // Default canvas vars
 let vCanv = document.getElementById('vector-canvas');   // Canvas workspace
-let vProp = document.getElementById('vector-properties');   // Canvas workspace
+let vProp = document.getElementById('vector-properties');   // Properties tab
 let scale = 1;                                          // Scale for size of canvas
 let defWidth = 500;                                     // Initial default canvas width
 let defHeight = 500;                                    // Initial default canvas height
@@ -10,10 +10,9 @@ let cHeight = defHeight * scale;                        // *actual* canvas heigh
 let cx = vCanv.offsetWidth/2 - cWidth/2;                // Canvas x value to center it
 let cy = vCanv.offsetHeight/2 - cHeight/2;              // Canvas y value to center it
 let st = 0;                                             // Stroke thickness
+let stColour = "rgb(0, 0, 0)";                          // Stroke colour
 // Element vars
 let currentlySelectedLayer;
-let canvEl;
-let propEl;
 let layers = new Array();
 // Other tracking vars
 let validColour = true;
@@ -55,7 +54,6 @@ function updateScaling() {
     // Update vars
     cWidth = defWidth * scale;
     cHeight = defHeight * scale;
-    console.log(scale);
     cx = totalWidth/2 - cWidth/2;
     cy = totalHeight/2 - cHeight/2;
 }
