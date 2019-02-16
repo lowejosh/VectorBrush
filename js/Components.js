@@ -185,7 +185,7 @@ class PropertyControls extends React.Component {
             });
             // If the canvas layer
             if (layers.getCurrentLayerIndex() == 0) {
-                layers.getCanvas().strokeWidth = newStroke;
+                layers.getCanvas().defStrokeWidth = newStroke;
             }
         } else {
             //TODO notifications
@@ -289,7 +289,8 @@ class Item {
         this.width = width * layers.getScale();
         this.height = height * layers.getScale();
         this.colour = colour;
-        this.strokeWidth = strokeWidth;
+        this.defStrokeWidth = strokeWidth;
+        this.strokeWidth = strokeWidth * layers.getScale();
         this.strokeColour = strokeColour;
         this.type = type;
     }

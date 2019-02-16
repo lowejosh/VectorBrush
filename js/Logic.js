@@ -42,11 +42,11 @@ function updateScaling() {
     // Update vars
     cWidth = defWidth * scale;
     cHeight = defHeight * scale;
-
     c.width = cWidth;
     c.height = cHeight;
     c.x = totalWidth/2 - cWidth/2;
     c.y = totalHeight/2 - cHeight/2;
+    c.strokeWidth = c.defStrokeWidth * scale;
     layers.scale = scale;
 }
 
