@@ -1,29 +1,17 @@
-// === GLOBAL VARS ===
-// Default canvas vars
-let vCanv = document.getElementById('vector-canvas');   // Canvas workspace
-let vProp = document.getElementById('vector-properties');   // Properties tab
-let scale = 1;                                          // Scale for size of canvas
-let defWidth = 500;                                     // Initial default canvas width
-let defHeight = 500;                                    // Initial default canvas height
-let cWidth = defWidth * scale;                          // *actual* canvas width after scale is applied
-let cHeight = defHeight * scale;                        // *actual* canvas height after scale is applied
-let cx = vCanv.offsetWidth/2 - cWidth/2;                // Canvas x value to center it
-let cy = vCanv.offsetHeight/2 - cHeight/2;              // Canvas y value to center it
-let st = 0;                                             // Stroke thickness
-let stColour = "rgb(0, 0, 0)";                          // Stroke colour
-// Element vars
-let currentlySelectedLayer;
-let layers = new Array();
-// Other tracking vars
-let validColour = true;
-let validStrokeColour = true;
-
+// Declare global layers
+let layers;
 
 // UPDATE THE CANVAS SCALING
 function updateScaling() {
-    // Temp vars
-    let totalWidth = vCanv.offsetWidth;
-    let totalHeight = vCanv.offsetHeight;
+    // vars
+    let totalWidth = document.getElementById('vector-canvas').offsetWidth;
+    let totalHeight = document.getElementById('vector-canvas').offsetHeight;
+    let c = layers.getCanvas();
+    let cWidth = c.width;
+    let cHeight = c.height;
+    let defWidth = c.defWidth;
+    let defHeight = c.defHeight;
+    let scale = layers.getScale();
 
     // Removes a bootstrap bug
     if (!totalWidth) {
@@ -54,8 +42,12 @@ function updateScaling() {
     // Update vars
     cWidth = defWidth * scale;
     cHeight = defHeight * scale;
-    cx = totalWidth/2 - cWidth/2;
-    cy = totalHeight/2 - cHeight/2;
+
+    c.width = cWidth;
+    c.height = cHeight;
+    c.x = totalWidth/2 - cWidth/2;
+    c.y = totalHeight/2 - cHeight/2;
+    layers.scale = scale;
 }
 
 // CHECK FOR VALID COLOUR
@@ -68,5 +60,22 @@ function checkValidColour(colour) {
     } else {
         return false;
     }
-
 }
+
+
+// OTHER FUNCTIONS 
+// BG Color picker 
+$(function () {
+  $('#cp').colorpicker({
+    horizontal: true,
+    autoInputFallback: false
+  });
+});
+
+// StrokeColor picker 
+$(function () {
+  $('#cp2').colorpicker({
+    horizontal: true,
+    autoInputFallback: false
+  });
+});

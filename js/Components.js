@@ -1,36 +1,40 @@
-// ========== REACT MODELS ==========
+// ========== REACT COMPONENTS ==========
 // CANVAS MODEL 
 class VectorCanvas extends React.Component {
     constructor(props) {
-        updateScaling();
         super(props);
+        let canv = layers.getCanvas();
+        let canvDom = document.getElementById("vector-canvas");
+
+        
         this.state = {
-            colour: props.colour,
-            w: cWidth,
-            h: cHeight,
-            midX: vCanv.offsetWidth/2 - cWidth/2,
-            midY: vCanv.offsetHeight/2 - cHeight/2,
-            layerNo: 0
+            colour: canv.colour,
+            w: canv.width,
+            h: canv.height,
+            x: canv.x,
+            y: canv.y,
+            scale: layers.getScale(),
         };
     }
 
     componentDidMount() {
         this.interval = setInterval(() => {
-            // === CANVAS STUFF === 
+            updateScaling();
+            let c = layers.getCanvas();
+
             // See if valid colour
-            validColour = checkValidColour(document.getElementById("cpValue").value);
             let clrBuffer = this.state.colour;
-            if (validColour && (currentlySelectedLayer == this.state.layerNo)) {
+            if (layers.getCurrentLayerIndex() == 0) {
+
                 clrBuffer = document.getElementById("cpValue").value;
             } 
             this.setState({
                 colour: clrBuffer,
-                w: cWidth,
-                h: cHeight,
-                midX: cx,
-                midY: cy,
-                stroke: st,
-                strokeColour: stColour
+                w: c.width,
+                h: c.height,
+                x: c.x,
+                y: c.y,
+                scale: layers.getScale(),
             });
 
             // === OTHER LAYER STUFF ===
@@ -47,14 +51,11 @@ class VectorCanvas extends React.Component {
     }
 
     render() {
-        // Update the scaling values
-        updateScaling();
-
         // Get JSX of all layers except canvas
         let JSX = new Array();
         if (layers.length > 1) {
             for (let i = 1; i < layers.length; i++) {
-                JSX.push(layers[i].getJSX());
+                JSX.push(layers.getLayer(i).getJSX());
             }
         }
 
@@ -66,7 +67,7 @@ class VectorCanvas extends React.Component {
         <svg width="100%" height="100%">
 
             {/* CANVAS */}
-            <rect x={this.state.midX} y={this.state.midY} width={this.state.w} height={this.state.h} fill={this.state.colour} style={{cStyle}}/>
+            <rect x={this.state.x} y={this.state.y} width={this.state.w} height={this.state.h} fill={this.state.colour} style={{cStyle}}/>
 
             {/* LAYERS */}
             {JSX}
@@ -78,13 +79,14 @@ class VectorCanvas extends React.Component {
 class PropertyControls extends React.Component {
     constructor(props) {
         super(props);
+        let item = layers.getCurrentLayer();
         this.state = {
-            title: props.item.title,
-            colour: props.item.colour,
-            width: props.item.width,
-            height: props.item.height,
+            title: item.title,
+            colour: item.colour,
+            width: item.defWidth,
+            height: item.defHeight,
             strokeColour: "rgb(0, 0, 0)",
-            strokeT: 0
+            strokeT: 0,
         };
         this.handleWidthChange = this.handleWidthChange.bind(this);
         this.handleHeightChange = this.handleHeightChange.bind(this);
@@ -108,8 +110,10 @@ class PropertyControls extends React.Component {
                 colour: clrBuffer
             });
             // If the canvas layer
-            if (currentlySelectedLayer == 0) {
-                defWidth = newWidth;
+            if (layers.getCurrentLayerIndex() == 0) {
+                layers.getCanvas().defWidth = newWidth;
+                layers.getCanvas().colour = clrBuffer;
+                updateScaling();
             } else {
                 // TODO notifications
             }
@@ -131,8 +135,10 @@ class PropertyControls extends React.Component {
                 colour: clrBuffer
             });
             // If the canvas layer
-            if (currentlySelectedLayer == 0) {
-                defHeight = newHeight;
+            if (layers.getCurrentLayerIndex() == 0) {
+                layers.getCanvas().defHeight = newHeight;
+                layers.getCanvas().colour = clrBuffer;
+                updateScaling();
             }
         } else {
             //TODO notifications
@@ -141,11 +147,11 @@ class PropertyControls extends React.Component {
 
     // Handle colour picker changes
     handleBGColourChange(e) {
-        validColour = checkValidColour(e.target.value);
-        // Update the state
+        let clrBuffer = document.getElementById("cpValue").value;
         this.setState({
-            colour: document.getElementById("cpValue").value
+            colour: clrBuffer
         });
+        layers.getCanvas().colour = clrBuffer;
     }
 
     // Handle stroke thickness changes
@@ -164,7 +170,7 @@ class PropertyControls extends React.Component {
                 colour: clrBuffer
             });
             // If the canvas layer
-            if (currentlySelectedLayer == 0) {
+            if (layers.getCurrentLayerIndex() == 0) {
                 st = newStroke;
             }
         } else {
@@ -183,11 +189,9 @@ class PropertyControls extends React.Component {
         let layerJSX = new Array();
         for (let i = layers.length - 1; i >= 0; i--) {
             // TODO add a nice little svg icon showing the shape
-            console.log(i);
             layerJSX.push(
-                <div className="layer-list-object" key={i}>{layers[i].title}</div>
+                <div className="layer-list-object" key={i}>{this.state.layers[i].title}</div>
             );
-            console.log("i: " + i + "; li: " + layers[i].title);
 
         }
 
@@ -255,17 +259,20 @@ class Layers extends React.Component {
 
 }
 
-// ========== JAVASCRIPT CLASSES ==========
+// ========== JAVASCRIPT DATA STRUCTURE OBJECTS ==========
 class Item {
-    constructor(title, x, y, width, height, colour, type, layerNo) {
+    constructor(title, x, y, width, height, colour, strokeWidth, strokeColour, type) {
         this.title = title;
         this.x = x;
         this.y = y;
-        this.width = width;
-        this.height = height;
+        this.defWidth = width;
+        this.defHeight = height;
+        this.width = width * layers.getScale();
+        this.height = height * layers.getScale();
         this.colour = colour;
+        this.strokeWidth = strokeWidth;
+        this.strokeColour = strokeColour;
         this.type = type;
-        this.layerNo = layerNo;
     }
 
     getJSX() {
@@ -274,5 +281,42 @@ class Item {
                 return <rect key={this.layerNo} x={cx + (this.x * scale)} y={cy + (this.y * scale)} width={this.width * scale} height={this.height * scale} fill={this.colour} />
                 break;
         }
+    }
+}
+
+class LayerMap {
+    constructor() {
+        // Initialise canvas layer
+        this.currentlySelectedLayer = 0;
+        this.layers = new Array();
+        this.scale = 1;
+    }
+    
+    addLayer(item) {
+        this.layers.push(item);
+    }
+
+    removeLayerIndex(index) {
+        this.layers.splice(index, 1);
+    }
+
+    getLayer(index) {
+        return this.layers[index];
+    }
+
+    getCurrentLayer() {
+        return this.layers[this.currentlySelectedLayer];
+    }
+
+    getCurrentLayerIndex() {
+        return this.currentlySelectedLayer;
+    }
+
+    getScale() {
+        return this.scale;
+    }
+
+    getCanvas() {
+        return this.getLayer(0);
     }
 }
