@@ -24,15 +24,15 @@ class VectorCanvas extends React.Component {
             updateScaling();
             let c = layers.getCanvas();
 
-            // See if valid colour
             let clrBuffer = this.state.colour;
+            let strokeClrBuffer = this.state.strokeColour;
             if (layers.getCurrentLayerIndex() == 0) {
-
                 clrBuffer = document.getElementById("cpValue").value;
+                strokeClrBuffer = document.getElementById("cp2Value").value;
             } 
             this.setState({
                 colour: clrBuffer,
-                strokeColour: c.strokeColour,
+                strokeColour: strokeClrBuffer,
                 w: c.width,
                 h: c.height,
                 x: c.x,
@@ -69,7 +69,6 @@ class VectorCanvas extends React.Component {
             stroke: this.state.strokeColour,
             strokeWidth: this.state.stroke
         }
-        console.log(cStyle);
 
         return (
         // Working area
@@ -189,7 +188,12 @@ class PropertyControls extends React.Component {
 
     // handle stroke colour changes 
     handleStrokeColourChange(e) {
-
+        console.log("REACHED");
+        let clrBuffer = document.getElementById("cp2Value").value;
+        this.setState({
+            strokeColour: clrBuffer
+        });
+        layers.getCanvas().strokeColour = clrBuffer;
     }
 
     render() {
