@@ -9,7 +9,7 @@ function setup() {
   let newRect = new Item("Rect1", 50, 50, 200, 200, "rgb(23, 32, 254)", 0, "rgb(0, 0, 0)", "rect");
   layers.addLayer(newRect);
 
-  // TEst new o  // Initialize the React components 
+  // Initialize the React components 
   let propEl = <PropertyControls />;
   let layerEl = <Layers />;
   let canvEl = <VectorCanvas />;
@@ -19,7 +19,6 @@ function setup() {
   ReactDOM.render(layerEl, document.getElementById("vector-layers"));
   ReactDOM.render(canvEl, document.getElementById("vector-canvas"));
 }
-
 
 // === START PROGRAM ===
 setup();

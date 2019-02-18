@@ -203,51 +203,44 @@ class PropertyControls extends React.Component {
 
     render() {
 
-        // Create the layer list output
-        let layerJSX = new Array();
-        for (let i = layers.length - 1; i >= 0; i--) {
-            // TODO add a nice little svg icon showing the shape
-            layerJSX.push(
-                <div className="layer-list-object" key={i}>{this.state.layers[i].title}</div>
-            );
-
-        }
-
         return (<div className="prop-wrap">
         <div className="info">
-            <h5 className="properties-title">Editing <i>{this.state.title}</i></h5>
-            <h6 className="properties-title">Size/Background</h6>
-            <div className="input-group mb-3">
-                <input type="text" className="form-control smaller-input" onChange={this.handleWidthChange} value={this.state.width} />
-                <div className="input-group-append">
-                    <span className="input-group-text" id="prop-width">Width</span>
+            <h5 className="properties-title big-title">Editing <i>{this.state.title}</i></h5>
+            <h6 className="properties-title sub-title">Size/Background</h6>
+            <div className="margin-wrap">
+                <div className="input-group mb-3">
+                    <input type="text" className="form-control smaller-input" onChange={this.handleWidthChange} value={this.state.width} />
+                    <div className="input-group-append">
+                        <span className="input-group-text" id="prop-width">Width</span>
+                    </div>
+                </div>
+                <div className="input-group mb-3">
+                    <input type="text" className="form-control smaller-input" onChange={this.handleHeightChange} value={this.state.height} />
+                    <div className="input-group-append">
+                        <span className="input-group-text" id="prop-height">Height</span>
+                    </div>
+                </div>
+                <div id="cp" className="input-group">
+                    <input type="text" id="cpValue" className="form-control input-lg color-picker" onChange={this.handleBGColourChange} onInput={this.handleBGColourChange} value={this.state.colour} spellCheck="false" />
+                    <span className="input-group-append">
+                        <span className="input-group-text colorpicker-input-addon color-picker"><i></i></span>
+                    </span>
                 </div>
             </div>
-            <div className="input-group mb-3">
-                <input type="text" className="form-control smaller-input" onChange={this.handleHeightChange} value={this.state.height} />
-                <div className="input-group-append">
-                    <span className="input-group-text" id="prop-height">Height</span>
+            <h6 className="properties-title sub-title">Stroke</h6>
+            <div className="margin-wrap">
+                <div className="input-group mb-3">
+                    <input type="text" className="form-control smaller-input" onChange={this.handleStrokeTChange} value={this.state.strokeT} />
+                    <div className="input-group-append">
+                        <span className="input-group-text" id="prop-width">Thickness</span>
+                    </div>
                 </div>
-            </div>
-            <div id="cp" className="input-group">
-                <input type="text" id="cpValue" className="form-control input-lg color-picker" onChange={this.handleBGColourChange} onInput={this.handleBGColourChange} value={this.state.colour} spellCheck="false" />
-                <span className="input-group-append">
-                    <span className="input-group-text colorpicker-input-addon color-picker"><i></i></span>
-                </span>
-            </div>
-
-            <h6 className="properties-title">Stroke</h6>
-            <div className="input-group mb-3">
-                <input type="text" className="form-control smaller-input" onChange={this.handleStrokeTChange} value={this.state.strokeT} />
-                <div className="input-group-append">
-                    <span className="input-group-text" id="prop-width">Thickness</span>
+                <div id="cp2" className="input-group">
+                    <input type="text" id="cp2Value" className="form-control input-lg color-picker" onChange={this.handleStrokeColourChange} onInput={this.handleStrokeColourChange} value={this.state.strokeColour} spellCheck="false" />
+                    <span className="input-group-append">
+                        <span className="input-group-text colorpicker-input-addon color-picker"><i></i></span>
+                    </span>
                 </div>
-            </div>
-            <div id="cp2" className="input-group">
-                <input type="text" id="cp2Value" className="form-control input-lg color-picker" onChange={this.handleStrokeColourChange} onInput={this.handleStrokeColourChange} value={this.state.strokeColour} spellCheck="false" />
-                <span className="input-group-append">
-                    <span className="input-group-text colorpicker-input-addon color-picker"><i></i></span>
-                </span>
             </div>
         </div>
     </div>);
@@ -264,11 +257,26 @@ class Layers extends React.Component {
     }
 
     render() {
+
+        // Create the layer list output
+        let layerJSX = new Array();
+        for (let i = layers.getAmount() - 1; i >= 0; i--) {
+            // TODO add a nice little svg icon showing the shape
+            console.log("REacHED");
+            layerJSX.push(
+                <div className="layer-list-object" key={i}>{layers.getLayer(i).title}</div>
+            );
+
+        }
+        console.log(layerJSX);
+
+
+
         return (
             <div className="layers">
                 <h5 className="properties-title">Layers</h5>
                 <div className="layer-list">
-
+                    {layerJSX}
                 </div>
             </div>
 
