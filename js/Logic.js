@@ -79,3 +79,9 @@ $(function () {
     autoInputFallback: false
   });
 });
+
+// sortable list
+$( function() {
+    $( "#sortable" ).sortable();
+    $( "#sortable" ).disableSelection();
+} );

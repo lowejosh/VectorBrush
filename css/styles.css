@@ -135,17 +135,27 @@ html, body {
     margin: 0 !important;
     bottom: 0;
 }
+.layer-list {
+    height: calc(100% - 2.5rem);
+    width: 100%;
+    overflow: hidden !important;
+    position: absolute;
+}
 .layer-list-object {
     margin: 0.5rem;
-    padding-left: 0.3rem;
+    padding-left: 0.75rem;
     height: 28px;
     line-height: 28px;
     cursor: pointer;
     font-style: italic;
     background-color: #23282c;
-    color: #D1D4D7;
     color: #BABCBF;
     border-radius: 0.25rem;
+}
+.layers ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
 }
 
 /* ========== END PROPERTIES STUFF ========= */
@@ -171,6 +181,7 @@ html, body {
         margin-top: 2rem;
         position: relative;
         width: 100%;
+        height: auto;
     }
 
     .navbar-text {

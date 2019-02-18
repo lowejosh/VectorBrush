@@ -256,38 +256,67 @@ class Layers extends React.Component {
         };
     }
 
+    dragging() {
+        // Retrieve HTML as a string from the parent element
+        let data = document.getElementById("sortable").innerHTML;
+        let titleArray = new Array();
+
+        // Create a wrapping element and append the data so that a query can be made on each list element to get the innerHTML
+        let div = document.createElement("div");
+        div.innerHTML = data;
+        let nodes = div.getElementsByClassName("layer-list-object");
+        for (let i = 0; i < nodes.length; i++) { 
+            titleArray.push(nodes[i].innerHTML);
+        }
+
+        // Find out the new array order based on the innerHTML matching with the layer titles (exlude canvas or big oof);
+        for (let i = 1; i < titleArray.length; i++) {
+            if (layers.getLayer(i).title != titleArray[i]) {
+                for (let j = 1; j < layers.getAmount(); j++) {
+                    if (layers.getLayer(j).title == titleArray[i]) {
+                        layers.getArray().splice(i, 0, layers.getArray().splice(j, 1)[0]);
+                    }
+                }
+            }
+        }
+
+        for (let i = layers.getAmount() - 1; i > 0; i--) {
+            console.log(layers.getLayer(i).title);
+        }
+        console.log("\n");
+    }
+
     render() {
 
         // Create the layer list output
         let layerJSX = new Array();
-        for (let i = layers.getAmount() - 1; i >= 0; i--) {
+        for (let i = layers.getAmount() - 1; i > 0; i--) {
             // TODO add a nice little svg icon showing the shape
             console.log("REacHED");
             layerJSX.push(
-                <div className="layer-list-object" key={i}>{layers.getLayer(i).title}</div>
+                <li draggable="true" onTouchEnd={this.dragging} onMouseUp={this.dragging} className="layer-list-object" key={i}>{layers.getLayer(i).title}</li>
             );
 
         }
         console.log(layerJSX);
 
-
-
         return (
             <div className="layers">
                 <h5 className="properties-title">Layers</h5>
                 <div className="layer-list">
-                    {layerJSX}
+                    <ul id="sortable">
+                        {layerJSX}
+                    </ul>
                 </div>
             </div>
 
         );
     }
-
 }
 
 // ========== JAVASCRIPT DATA STRUCTURE OBJECTS ==========
 class Item {
-    constructor(title, x, y, width, height, colour, strokeWidth, strokeColour, type) {
+    constructor(title, x, y, width, height, colour, strokeWidth, strokeColour, type, layerNo) {
         this.title = title;
         this.x = x;
         this.y = y;
@@ -300,6 +329,7 @@ class Item {
         this.strokeWidth = strokeWidth * layers.getScale();
         this.strokeColour = strokeColour;
         this.type = type;
+        this.layerNo = layerNo;
     }
 
     getJSX() {
@@ -324,6 +354,10 @@ class LayerMap {
     
     addLayer(item) {
         this.layers.push(item);
+    }
+
+    getArray() {
+        return this.layers;
     }
 
     removeLayerIndex(index) {
