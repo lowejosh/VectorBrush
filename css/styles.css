@@ -5,7 +5,10 @@
 
 /* Minimum Width */
 html {
-    min-width: 450px;
+    min-width: 280px;
+}
+.navbar-dark {
+    background-color: #23282c !important;
 }
 
 html, body {
@@ -24,15 +27,16 @@ html, body {
 .lsideb {
     -ms-flex: 0 0 50px;
     flex: 0 0 50px;
+    background-color: #1e2021;
 }
 
 .rsideb {
     -ms-flex: 0 0 220px;
     flex: 0 0 220px;
+    background-color: #2C3237;
 }
 
 .lsideb, .rsideb {
-    background-color: #2C3237;
     margin: 0;
     padding: 0;
 }
@@ -167,5 +171,9 @@ html, body {
         margin-top: 2rem;
         position: relative;
         width: 100%;
+    }
+
+    .navbar-text {
+        display: none;
     }
 }
