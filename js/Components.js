@@ -103,6 +103,32 @@ class PropertyControls extends React.Component {
         this.handleStrokeTChange = this.handleStrokeTChange.bind(this);
     }
 
+    // Handle sliding up and down menu part
+    slideStroke() {
+        let el = document.getElementById("strokeMenu");
+
+        if (el.style.display == "none") {
+            $(el).slideDown();
+            $(document.getElementById("strokeIcon")).removeClass('flip');
+        } else {
+            $(el).slideUp();
+            $(document.getElementById("strokeIcon")).addClass('flip');
+        }
+    }
+
+    // Handle sliding up and down menu part
+    slideSizeBg() {
+        let el = document.getElementById("sizeBgMenu");
+
+        if (el.style.display == "none") {
+            $(el).slideDown();
+            $(document.getElementById("sizeBgIcon")).removeClass('flip');
+        } else {
+            $(el).slideUp();
+            $(document.getElementById("sizeBgIcon")).addClass('flip');
+        }
+    }
+
     handleWidthChange(e) {
         // Get colour from DOM because the state isnt updated when using the colour picker
         let clrBuffer = document.getElementById("cpValue").value;
@@ -206,8 +232,8 @@ class PropertyControls extends React.Component {
         return (<div className="prop-wrap">
         <div className="info">
             <h5 className="properties-title big-title">Editing <i>{this.state.title}</i></h5>
-            <h6 className="properties-title sub-title">Size/Background</h6>
-            <div className="margin-wrap">
+            <h6 className="properties-title sub-title" onClick={this.slideSizeBg}>Size/Background<i id="sizeBgIcon" className="material-icons title-icon">expand_less</i></h6>
+            <div id="sizeBgMenu" className="margin-wrap">
                 <div className="input-group mb-3">
                     <input type="text" className="form-control smaller-input" onChange={this.handleWidthChange} value={this.state.width} />
                     <div className="input-group-append">
@@ -227,8 +253,8 @@ class PropertyControls extends React.Component {
                     </span>
                 </div>
             </div>
-            <h6 className="properties-title sub-title">Stroke</h6>
-            <div className="margin-wrap">
+            <h6 className="properties-title sub-title" onClick={this.slideStroke}>Stroke<i id="strokeIcon" className="material-icons title-icon">expand_less</i></h6>
+            <div id="strokeMenu" className="margin-wrap">
                 <div className="input-group mb-3">
                     <input type="text" className="form-control smaller-input" onChange={this.handleStrokeTChange} value={this.state.strokeT} />
                     <div className="input-group-append">
@@ -256,52 +282,17 @@ class Layers extends React.Component {
         };
     }
 
-    dragging() {
-        // Retrieve HTML as a string from the parent element
-        let data = document.getElementById("sortable").innerHTML;
-        let titleArray = new Array();
-        // Add canvas (its kind of for easier manipulation of both the arrays so they have equal length - dont worry)
-        titleArray.push("Canvas");
-
-        // Create a wrapping element and append the data so that a query can be made on each list element to get the innerHTML
-        let div = document.createElement("div");
-        div.innerHTML = data;
-        let nodes = div.getElementsByClassName("layer-list-object");
-        for (let i = 0; i < nodes.length; i++) { 
-            titleArray.push(nodes[i].innerHTML);
-        }
-
-        // Find out the new array order based on the innerHTML matching with the layer titles (exlude canvas or big oof);
-        for (let i = 0; i < titleArray.length; i++) {
-            if (layers.getLayer(i).title != titleArray[i]) {
-                for (let j = 0; j < layers.getAmount(); j++) {
-                    if (layers.getLayer(j).title == titleArray[i]) {
-                        layers.getArray().splice(i, 0, layers.getArray().splice(j, 1)[0]);
-                    }
-                }
-            }
-        }
-
-        // Layers are reversed except for canvas due to goofy formatting from HTML inversing the order
-        // This is the whacky solution:
-        let tmpCnv = layers.layers.splice(0, 1);
-        layers.layers.reverse();
-        layers.layers = tmpCnv.concat(layers.layers);
-    }
-
     render() {
 
         // Create the layer list output
         let layerJSX = new Array();
         for (let i = layers.getAmount() - 1; i > 0; i--) {
             // TODO add a nice little svg icon showing the shape
-            console.log("REacHED");
             layerJSX.push(
-                <li draggable="true" onTouchEnd={this.dragging} onMouseUp={this.dragging} className="layer-list-object" key={i}>{layers.getLayer(i).title}</li>
+                <li draggable="true" className="layer-list-object" key={i}>{layers.getLayer(i).title}</li>
             );
 
         }
-        console.log(layerJSX);
 
         return (
             <div className="layers">

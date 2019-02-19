@@ -85,3 +85,47 @@ $( function() {
     $( "#sortable" ).sortable();
     $( "#sortable" ).disableSelection();
 } );
+
+// Global mouse and touch end listener -- removes a bug because react synthetic event worked locally for the element
+document.addEventListener("mouseup", function () {
+    //TODO add more?
+    handleLayerChange();
+});
+document.addEventListener("ontouchend", function() {
+    //TODO add more?
+    handleLayerChange();
+})
+
+// Rearranges layers to match layer UI
+function handleLayerChange() {
+    // Retrieve HTML as a string from the parent element
+    let data = document.getElementById("sortable").innerHTML;
+    let titleArray = new Array();
+    // Add canvas (its kind of for easier manipulation of both the arrays so they have equal length - dont worry)
+    titleArray.push("Canvas");
+
+    // Create a wrapping element and append the data so that a query can be made on each list element to get the innerHTML
+    let div = document.createElement("div");
+    div.innerHTML = data;
+    let nodes = div.getElementsByClassName("layer-list-object");
+    for (let i = 0; i < nodes.length; i++) { 
+        titleArray.push(nodes[i].innerHTML);
+    }
+
+    // Find out the new array order based on the innerHTML matching with the layer titles (exlude canvas or big oof);
+    for (let i = 0; i < titleArray.length; i++) {
+        if (layers.getLayer(i).title != titleArray[i]) {
+            for (let j = 0; j < layers.getAmount(); j++) {
+                if (layers.getLayer(j).title == titleArray[i]) {
+                    layers.getArray().splice(i, 0, layers.getArray().splice(j, 1)[0]);
+                }
+            }
+        }
+    }
+
+    // Layers are reversed except for canvas due to goofy formatting from HTML inversing the order
+    // This is the whacky solution:
+    let tmpCnv = layers.layers.splice(0, 1);
+    layers.layers.reverse();
+    layers.layers = tmpCnv.concat(layers.layers);
+}
