@@ -260,6 +260,8 @@ class Layers extends React.Component {
         // Retrieve HTML as a string from the parent element
         let data = document.getElementById("sortable").innerHTML;
         let titleArray = new Array();
+        // Add canvas (its kind of for easier manipulation of both the arrays so they have equal length - dont worry)
+        titleArray.push("Canvas");
 
         // Create a wrapping element and append the data so that a query can be made on each list element to get the innerHTML
         let div = document.createElement("div");
@@ -270,9 +272,9 @@ class Layers extends React.Component {
         }
 
         // Find out the new array order based on the innerHTML matching with the layer titles (exlude canvas or big oof);
-        for (let i = 1; i < titleArray.length; i++) {
+        for (let i = 0; i < titleArray.length; i++) {
             if (layers.getLayer(i).title != titleArray[i]) {
-                for (let j = 1; j < layers.getAmount(); j++) {
+                for (let j = 0; j < layers.getAmount(); j++) {
                     if (layers.getLayer(j).title == titleArray[i]) {
                         layers.getArray().splice(i, 0, layers.getArray().splice(j, 1)[0]);
                     }
@@ -280,10 +282,11 @@ class Layers extends React.Component {
             }
         }
 
-        for (let i = layers.getAmount() - 1; i > 0; i--) {
-            console.log(layers.getLayer(i).title);
-        }
-        console.log("\n");
+        // Layers are reversed except for canvas due to goofy formatting from HTML inversing the order
+        // This is the whacky solution:
+        let tmpCnv = layers.layers.splice(0, 1);
+        layers.layers.reverse();
+        layers.layers = tmpCnv.concat(layers.layers);
     }
 
     render() {

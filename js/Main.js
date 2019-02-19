@@ -17,6 +17,10 @@ function setup() {
   let newRect3 = new Item("Rect3", 20, 200, 150, 190, "rgb(229, 22, 24)", 0, "rgb(0, 0, 0)", "rect", 3);
   layers.addLayer(newRect3);
 
+  // TEst new object
+  let newRect4 = new Item("Rect4", 0, 260, 200, 90, "rgb(129, 202, 24)", 0, "rgb(0, 0, 0)", "rect", 4);
+  layers.addLayer(newRect4);
+
   // Initialize the React components 
   let propEl = <PropertyControls />;
   let layerEl = <Layers />;
