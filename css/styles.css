@@ -185,13 +185,47 @@ html, body {
 
 /* ========== END PROPERTIES STUFF ========= */
 
+/* ========== START TOOL STUFF ========= */
+
+.tool {
+    color: #e9ecef;
+    padding: 0;
+    height: 50px;
+    width: 50px;
+    font-size: 20px;
+    cursor: pointer;
+}
+.tool-selected {
+    /* box-shadow: inset 0 0 0 0.1rem rgba(186,188,191,.10); */
+    border-top: 0.1rem solid rgba(186,188,191,.10);
+    border-bottom: 0.1rem solid rgba(186,188,191,.10);
+    background-color: #23282c;
+
+    transition: 0.2s;
+    -moz-transition: 0.2s;
+    -webkit-transition: 0.2s;
+}
+.pointer {
+    padding-left: 19px;
+    padding-top: 15px;
+}
+.pen {
+    padding-left: 15px;
+    padding-top: 15px;
+
+}
+.second {
+    background-color: #15181a;
+}
+
+
+/* ========== END TOOL STUFF ========= */
+
 @media (max-width: 575px) {
     .lsideb {
         -ms-flex: 0 0 100%;
         flex: 0 0 100%;
-        height: 50px;
     }
-
     .msideb {
         height: calc(100% - 270px);
     }
@@ -200,6 +234,9 @@ html, body {
         -ms-flex: 0 0 100%;
         flex: 0 0 100%;
         padding-bottom: 0;
+    }
+    .tool {
+        width: 50px;
     }
 
     .layers {

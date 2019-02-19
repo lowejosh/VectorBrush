@@ -275,13 +275,6 @@ class PropertyControls extends React.Component {
 
 // LAYERS MODEL 
 class Layers extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            layers: this.props.layers
-        };
-    }
-
     render() {
 
         // Create the layer list output
@@ -306,6 +299,33 @@ class Layers extends React.Component {
 
         );
     }
+}
+
+
+class Tools extends React.Component {
+    chooseSelect() {
+        options.updateToolSelection("selectTool");
+    }
+    choosePen() {
+        options.updateToolSelection("penTool");
+    }
+
+
+
+    render() {
+
+
+        return (
+            <div>
+                <div id="selectTool" onClick={this.chooseSelect} className="col-sm fas fa-mouse-pointer tool pointer tool-selected">
+                </div>
+                <div id="penTool" onClick={this.choosePen} className="col-sm fas fa-pen tool pen">
+                </div>
+            </div>
+
+        );
+    }
+
 }
 
 // ========== JAVASCRIPT DATA STRUCTURE OBJECTS ==========
@@ -380,5 +400,21 @@ class LayerMap {
 
     getAmount() { 
         return this.layers.length;
+    }
+}
+
+class Options {
+    constructor() {
+        // Currently selected tool
+        this.currentTool = "selectTool";
+        this.previousTool;
+    }
+
+    // Set the previous tool, remove the old tool class - and add the class to the new tool
+    updateToolSelection(newTool) {
+        this.previousTool = this.currentTool;
+        $(document.getElementById(options.previousTool)).removeClass("tool-selected");
+        this.currentTool = newTool;
+        $(document.getElementById(newTool)).addClass("tool-selected");
     }
 }

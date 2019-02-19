@@ -2,6 +2,7 @@
 function setup() {
   // Initialize layermap
   layers = new LayerMap();
+  options = new Options();
   layers.addLayer(new Item("Canvas", 0, 0, 500, 500, "rgb(243, 243, 245)", 0, "rgb(0, 0, 0)", "rect", 0));
   updateScaling();
 
@@ -24,11 +25,13 @@ function setup() {
   // Initialize the React components 
   let propEl = <PropertyControls />;
   let layerEl = <Layers />;
+  let toolEl = <Tools />;
   let canvEl = <VectorCanvas />;
 
   // Start Rendering
   ReactDOM.render(propEl, document.getElementById("vector-properties"));
   ReactDOM.render(layerEl, document.getElementById("vector-layers"));
+  ReactDOM.render(toolEl, document.getElementById("vector-tools"));
   ReactDOM.render(canvEl, document.getElementById("vector-canvas"));
 }
 

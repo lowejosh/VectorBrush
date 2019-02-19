@@ -1,5 +1,6 @@
-// Declare global layers
+// Declare global objects
 let layers;
+let options;
 
 // UPDATE THE CANVAS SCALING
 function updateScaling() {
