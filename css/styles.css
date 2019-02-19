@@ -28,6 +28,8 @@ html, body {
     -ms-flex: 0 0 50px;
     flex: 0 0 50px;
     background-color: #1e2021;
+    border-left: 0.1rem solid rgba(186,188,191,.10);
+    border-top: 0.1rem solid rgba(186,188,191,.10);
 }
 
 .rsideb {
@@ -201,13 +203,14 @@ html, body {
     border-bottom: 0.1rem solid rgba(186,188,191,.10);
     background-color: #23282c;
 
-    transition: 0.2s;
+    /* transition: 0.2s;
     -moz-transition: 0.2s;
-    -webkit-transition: 0.2s;
+    -webkit-transition: 0.2s; */
 }
 .pointer {
     padding-left: 19px;
     padding-top: 15px;
+    border-top: none !important;
 }
 .pen {
     padding-left: 15px;
@@ -221,15 +224,16 @@ html, body {
 
 /* ========== END TOOL STUFF ========= */
 
+/* ========== MoBiLe MoDe ========= */
 @media (max-width: 575px) {
     .lsideb {
         -ms-flex: 0 0 100%;
         flex: 0 0 100%;
+        border-top: 0.1rem solid rgba(186,188,191,.10);
     }
     .msideb {
         height: calc(100% - 270px);
     }
-
     .rsideb {
         -ms-flex: 0 0 100%;
         flex: 0 0 100%;
@@ -237,6 +241,18 @@ html, body {
     }
     .tool {
         width: 50px;
+    }
+    .tool-selected {
+        /* border-bottom: 0;
+        border-left: 0.1rem solid rgba(186,188,191,.10);
+        border-top: 0.1rem solid rgba(186,188,191,.10);
+        border-right: 0.1rem solid rgba(186,188,191,.10); */
+        border: 0;
+        border-left: 0.1rem solid rgba(186,188,191,.10);
+        border-right: 0.1rem solid rgba(186,188,191,.10); 
+    }
+    .pointer {
+        border-left: none !important;
     }
 
     .layers {
