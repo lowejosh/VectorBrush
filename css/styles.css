@@ -28,7 +28,6 @@ html, body {
     -ms-flex: 0 0 50px;
     flex: 0 0 50px;
     background-color: #1e2021;
-    border-left: 0.1rem solid rgba(186,188,191,.10);
     border-top: 0.1rem solid rgba(186,188,191,.10);
 }
 
@@ -215,7 +214,10 @@ html, body {
 .pen {
     padding-left: 15px;
     padding-top: 15px;
-
+}
+.circle { 
+    padding-left: 14px;
+    padding-top: 15px;
 }
 .second {
     background-color: #15181a;
@@ -251,10 +253,6 @@ html, body {
         border-left: 0.1rem solid rgba(186,188,191,.10);
         border-right: 0.1rem solid rgba(186,188,191,.10); 
     }
-    .pointer {
-        border-left: none !important;
-    }
-
     .layers {
         margin-top: 2rem;
         position: relative;

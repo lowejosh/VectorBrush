@@ -309,6 +309,12 @@ class Tools extends React.Component {
     choosePen() {
         options.updateToolSelection("penTool");
     }
+    chooseRect() {
+        options.updateToolSelection("rectTool");
+    }
+    chooseEllipse() {
+        options.updateToolSelection("ellipseTool");
+    }
 
 
 
@@ -320,6 +326,10 @@ class Tools extends React.Component {
                 <div id="selectTool" onClick={this.chooseSelect} className="col-sm fas fa-mouse-pointer tool pointer tool-selected">
                 </div>
                 <div id="penTool" onClick={this.choosePen} className="col-sm fas fa-pen tool pen">
+                </div>
+                <div id="rectTool" onClick={this.chooseRect} className="col-sm far fa-square tool pen">
+                </div>
+                <div id="ellipseTool" onClick={this.chooseEllipse} className="col-sm far fa-circle tool circle">
                 </div>
             </div>
 
