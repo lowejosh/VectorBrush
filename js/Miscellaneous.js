@@ -136,14 +136,14 @@ function handleLayerChange() {
     let selectOverlayJSX = new Array();
 
     // Constants
-    const pointSize = 5;
-    const pointColour = "#123456";
+    const pointSize = 8;
+    const pointColour = "#72bcd4";
    
     switch (item.type) {
         case "rect":
             // Grab the necessary vars from the item
-            let x = layers.getCanvas().x + item.x;
-            let y = layers.getCanvas().y + item.y;
+            let x = layers.getCanvas().x + item.x - pointSize/2;
+            let y = layers.getCanvas().y + item.y - pointSize/2;
             let w = item.width;
             let h = item.height;
 
@@ -159,7 +159,6 @@ function handleLayerChange() {
     }
 
     return selectOverlayJSX;
-
 }
 
 

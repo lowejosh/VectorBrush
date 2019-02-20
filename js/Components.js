@@ -64,8 +64,8 @@ class VectorCanvas extends React.Component {
         }
 
         // Get the select overlay SVG rects
-        let selectOverlayerJSX;
-        if (options.currentTool == "selectTool") {
+        let selectOverlayerJSX = "";
+        if (options.currentTool == "selectTool" && layers.currentlySelectedLayer != 0) {
             // First catch the item object corresponding to the currently selected layer
             let selectedItem = 0;
             for (let i = 0; i < layers.layers.length; i++) {
