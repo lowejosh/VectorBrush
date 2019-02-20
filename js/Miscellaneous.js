@@ -87,15 +87,10 @@ $( function() {
     $( "#sortable" ).disableSelection();
 } );
 
-// Global mouse and touch end listener -- removes a bug because react synthetic event worked locally for the element
-document.addEventListener("mouseup", function () {
-    //TODO add more?
-    handleLayerChange();
-});
-document.addEventListener("ontouchend", function() {
-    //TODO add more?
-    handleLayerChange();
-})
+
+
+
+
 
 // Rearranges layers to match layer UI
 function handleLayerChange() {
@@ -130,3 +125,54 @@ function handleLayerChange() {
     layers.layers.reverse();
     layers.layers = tmpCnv.concat(layers.layers);
 }
+
+
+
+
+
+// TODO - MOVE TO CANVAS COMPONENT
+// Grab Select SVG according to type
+ function getSelectOverLayerJSX(item) { 
+    let selectOverlayJSX = new Array();
+
+    // Constants
+    const pointSize = 5;
+    const pointColour = "#123456";
+   
+    switch (item.type) {
+        case "rect":
+            // Grab the necessary vars from the item
+            let x = layers.getCanvas().x + item.x;
+            let y = layers.getCanvas().y + item.y;
+            let w = item.width;
+            let h = item.height;
+
+            // cheeky way of iteratively generating rectangles without conditional logic
+            let xs = [x, x + w, x, x + w];
+            let ys = [y, y, y + h, y + h];
+
+            // Append all select overlay rects to the output array;
+            for (let i = 0; i < 4; i++) {
+                selectOverlayJSX.push(<rect key={"s" + i} x={xs[i]} y={ys[i]} width={pointSize} height={pointSize} fill={pointColour}></rect>)
+            }
+            break;
+    }
+
+    return selectOverlayJSX;
+
+}
+
+
+
+
+
+// Global mouse and touch end listener -- removes a bug because react synthetic event worked locally for the element
+document.addEventListener("mouseup", function () {
+    //TODO add more?
+    handleLayerChange();
+});
+document.addEventListener("ontouchend", function() {
+    //TODO add more?
+    handleLayerChange();
+})
+

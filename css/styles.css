@@ -200,14 +200,14 @@ html, body {
     cursor: pointer;
 }
 .tool:hover {
-    color: #babcbf;
+    color: #a3a5a7;
 }
 .tool-selected {
     /* box-shadow: inset 0 0 0 0.1rem rgba(186,188,191,.10); */
     border-top: 0.1rem solid rgba(186,188,191,.10);
     border-bottom: 0.1rem solid rgba(186,188,191,.10);
     background-color: #23282c;
-    color: #babcbf;
+    color: #a3a5a7;
 
     /* transition: 0.2s;
     -moz-transition: 0.2s;

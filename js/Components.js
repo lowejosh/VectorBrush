@@ -63,6 +63,22 @@ class VectorCanvas extends React.Component {
             }
         }
 
+        // Get the select overlay SVG rects
+        let selectOverlayerJSX;
+        if (options.currentTool == "selectTool") {
+            // First catch the item object corresponding to the currently selected layer
+            let selectedItem = 0;
+            for (let i = 0; i < layers.layers.length; i++) {
+                if (layers.currentlySelectedLayer == layers.layers[i].layerNo) {
+                    selectedItem = layers.layers[i];
+                }
+                //TODO catch null
+            }
+
+            // Grab Select SVG according to type
+            selectOverlayerJSX = getSelectOverLayerJSX(selectedItem);
+        }
+
         // Prep the canvas style tag
         let cStyle = {
             fill: this.state.colour,
@@ -79,6 +95,9 @@ class VectorCanvas extends React.Component {
 
             {/* LAYERS */}
             {JSX}
+            
+            {/* OVERLAYS */}
+            {selectOverlayerJSX}
         </svg>);
     }
 }
@@ -354,6 +373,14 @@ class Item {
         this.strokeColour = strokeColour;
         this.type = type;
         this.layerNo = layerNo;
+
+        this.handleSVGClick = this.handleSVGClick.bind(this);
+    }
+
+    handleSVGClick(e) {
+        if (options.currentTool == "selectTool") {
+            layers.currentlySelectedLayer = this.layerNo;
+        }
     }
 
     getJSX() {
@@ -362,7 +389,7 @@ class Item {
         let scale = layers.getScale();
         switch(this.type) {
             case "rect":
-                return <rect key={this.layerNo} x={cx + (this.x * scale)} y={cy + (this.y * scale)} width={this.width * scale} height={this.height * scale} fill={this.colour} />
+                return <rect key={this.layerNo} onClick={this.handleSVGClick} x={cx + (this.x * scale)} y={cy + (this.y * scale)} width={this.width * scale} height={this.height * scale} fill={this.colour} />
                 break;
         }
     }
