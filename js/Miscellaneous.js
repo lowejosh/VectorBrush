@@ -134,18 +134,19 @@ function handleLayerChange() {
 // Grab Select SVG according to type
  function getSelectOverLayerJSX(item) { 
     let selectOverlayJSX = new Array();
+    let scale = layers.scale;
 
     // Constants
     const pointSize = 8;
-    const pointColour = "#72bcd4";
+    const pointColour = "#3976f9";
    
     switch (item.type) {
         case "rect":
             // Grab the necessary vars from the item
-            let x = layers.getCanvas().x + item.x - pointSize/2;
-            let y = layers.getCanvas().y + item.y - pointSize/2;
-            let w = item.width;
-            let h = item.height;
+            let x = (layers.getCanvas().x + (item.x * scale)) - pointSize/2;
+            let y = (layers.getCanvas().y + (item.y * scale)) - pointSize/2;
+            let w = item.width * scale;
+            let h = item.height * scale;
 
             // cheeky way of iteratively generating rectangles without conditional logic
             let xs = [x, x + w, x, x + w];
