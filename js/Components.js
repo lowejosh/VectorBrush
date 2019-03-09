@@ -26,7 +26,7 @@ class VectorCanvas extends React.Component {
 
             let clrBuffer = this.state.colour;
             let strokeClrBuffer = this.state.strokeColour;
-            if (layers.getCurrentLayerIndex() == 0) {
+            if (layers.currentlySelectedLayer == 0) {
                 clrBuffer = document.getElementById("cpValue").value;
                 strokeClrBuffer = document.getElementById("cp2Value").value;
             } 
@@ -52,6 +52,15 @@ class VectorCanvas extends React.Component {
   
     componentWillUnmount() {
         clearInterval(this.interval);
+    }
+
+    svgClick() {
+        if (layers.layerBeingSelected == true) {
+            layers.layerBeingSelected = false;
+        } else {
+            layers.currentlySelectedLayer = 0;
+        }
+        console.log(layers.currentlySelectedLayer);
     }
 
     render() {
@@ -88,7 +97,7 @@ class VectorCanvas extends React.Component {
 
         return (
         // Working area
-        <svg width="100%" height="100%">
+        <svg onClick={this.svgClick} width="100%" height="100%">
 
             {/* CANVAS */}
             <rect x={this.state.x} y={this.state.y} width={this.state.w} height={this.state.h} style={cStyle}/>
@@ -121,6 +130,26 @@ class PropertyControls extends React.Component {
         this.handleStrokeColourChange = this.handleStrokeColourChange.bind(this);
         this.handleStrokeTChange = this.handleStrokeTChange.bind(this);
     }
+
+    // Update properties
+    componentDidMount() {
+        this.interval = setInterval(() => {
+            let item = layers.getCurrentLayer();
+            this.setState({
+                title: item.title,
+                colour: item.colour,
+                width: item.defWidth,
+                height: item.defHeight,
+                strokeColour: "rgb(0, 0, 0)",
+                strokeT: 0,
+            });
+        }, 100);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
+    }
+
 
     // Handle sliding up and down menu part
     slideStroke() {
@@ -164,13 +193,15 @@ class PropertyControls extends React.Component {
                 colour: clrBuffer,
                 strokeColour: strokeClrBuffer,
             });
-            // If the canvas layer
+
+            // Update the values
+            let l = layers.getCurrentLayer();
+            l.defWidth = newWidth;
+            l.colour = clrBuffer;
+            
+            // If the canvas layer - update the scaling
             if (layers.getCurrentLayerIndex() == 0) {
-                layers.getCanvas().defWidth = newWidth;
-                layers.getCanvas().colour = clrBuffer;
                 updateScaling();
-            } else {
-                // TODO notifications
             }
         }
     }
@@ -191,10 +222,13 @@ class PropertyControls extends React.Component {
                 colour: clrBuffer,
                 strokeColour: strokeClrBuffer,
             });
-            // If the canvas layer
+            // Update the values
+            let l = layers.getCurrentLayer();
+            l.defHeight = newHeight;
+            l.colour = clrBuffer;
+            
+            // If the canvas layer - update the scaling
             if (layers.getCurrentLayerIndex() == 0) {
-                layers.getCanvas().defHeight = newHeight;
-                layers.getCanvas().colour = clrBuffer;
                 updateScaling();
             }
         } else {
@@ -208,7 +242,11 @@ class PropertyControls extends React.Component {
         this.setState({
             colour: clrBuffer
         });
-        layers.getCanvas().colour = clrBuffer;
+        // If the canvas layer
+        if (layers.currentlySelectedLayer == 0 && options.currentTool == "selectTool") {
+            console.log("reee");
+            layers.getCanvas().colour = clrBuffer;
+        }
     }
 
     // Handle stroke thickness changes
@@ -229,7 +267,7 @@ class PropertyControls extends React.Component {
                 strokeColour: strokeClrBuffer,
             });
             // If the canvas layer
-            if (layers.getCurrentLayerIndex() == 0) {
+            if (layers.currentlySelectedLayer == 0 && options.currentTool == "selectTool") {
                 layers.getCanvas().defStrokeWidth = newStroke;
             }
         } else {
@@ -365,8 +403,8 @@ class Item {
         this.y = y;
         this.defWidth = width;
         this.defHeight = height;
-        this.width = width * layers.getScale();
-        this.height = height * layers.getScale();
+        this.width = width * layers.getScale(); // these are necessary for some reason
+        this.height = height * layers.getScale(); // ? TODO
         this.colour = colour;
         this.defStrokeWidth = strokeWidth;
         this.strokeWidth = strokeWidth * layers.getScale();
@@ -379,6 +417,7 @@ class Item {
 
     handleSVGClick(e) {
         if (options.currentTool == "selectTool") {
+            layers.layerBeingSelected = true;
             layers.currentlySelectedLayer = this.layerNo;
         }
     }
@@ -389,7 +428,7 @@ class Item {
         let scale = layers.getScale();
         switch(this.type) {
             case "rect":
-                return <rect key={this.layerNo} onClick={this.handleSVGClick} x={cx + (this.x * scale)} y={cy + (this.y * scale)} width={this.width * scale} height={this.height * scale} fill={this.colour} />
+                return <rect key={this.layerNo} onClick={this.handleSVGClick} x={cx + (this.x * scale)} y={cy + (this.y * scale)} width={this.defWidth * scale} height={this.defHeight * scale} fill={this.colour} />
                 break;
         }
     }
@@ -399,6 +438,7 @@ class LayerMap {
     constructor() {
         // Initialise canvas layer
         this.currentlySelectedLayer = 0;
+        this.layerBeingSelected = false;
         this.layers = new Array();
         this.scale = 1;
     }

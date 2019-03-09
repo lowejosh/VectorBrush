@@ -134,27 +134,35 @@ function handleLayerChange() {
 // Grab Select SVG according to type
  function getSelectOverLayerJSX(item) { 
     let selectOverlayJSX = new Array();
-    let scale = layers.scale;
+    let scale = layers.getScale();
 
     // Constants
-    const pointSize = 8;
+    const pointSize = 6;
     const pointColour = "#3976f9";
-   
+    const pointStyles = [{cursor: "nw-resize"},{cursor: "ne-resize"},{cursor: "ne-resize"},{cursor: "nw-resize"}];
+    const lineStyles = [{cursor: "n-resize"},{cursor: "e-resize"},{cursor: "n-resize"},{cursor: "e-resize"}];
+
     switch (item.type) {
         case "rect":
             // Grab the necessary vars from the item
             let x = (layers.getCanvas().x + (item.x * scale)) - pointSize/2;
             let y = (layers.getCanvas().y + (item.y * scale)) - pointSize/2;
-            let w = item.width * scale;
-            let h = item.height * scale;
+            let w = item.defWidth * scale;
+            let h = item.defHeight * scale;
 
             // cheeky way of iteratively generating rectangles without conditional logic
             let xs = [x, x + w, x, x + w];
             let ys = [y, y, y + h, y + h];
+            let outlinesx = [x + pointSize, x + w + 1, x + pointSize, x + 1];
+            let outlinesy = [y + 1, y + pointSize, (y + h) + 1, y + pointSize];
+            let outlinesw = [w - pointSize, 3, w - pointSize, 3];
+            let outlinesh = [3, h - pointSize, 3, h - pointSize];
+            // let colors = ["red", "green", "purple", "black", "yellow", "blue", "grey"]; // for debug
 
             // Append all select overlay rects to the output array;
             for (let i = 0; i < 4; i++) {
-                selectOverlayJSX.push(<rect key={"s" + i} x={xs[i]} y={ys[i]} width={pointSize} height={pointSize} fill={pointColour}></rect>)
+                selectOverlayJSX.push(<rect key={"s" + i} x={xs[i]} y={ys[i]} width={pointSize} height={pointSize} fill={pointColour} style={pointStyles[i]}></rect>)
+                selectOverlayJSX.push(<rect key={"so" + i} x={outlinesx[i]} y={outlinesy[i]} width={outlinesw[i]} height={outlinesh[i]} fill={pointColour} style={lineStyles[i]}></rect>)
             }
             break;
     }
@@ -162,6 +170,9 @@ function handleLayerChange() {
     return selectOverlayJSX;
 }
 
+function updatePropertiesOnLayerChange() {
+
+}
 
 
 
